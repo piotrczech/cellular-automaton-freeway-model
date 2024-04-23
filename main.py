@@ -18,9 +18,9 @@ def main(L, v_max, density, p, steps):
     for i in range(1, steps + t_0):
         # Generate new? - to powinno byc oparte na density
         # albo jezdza w koło?
-        # if N_cars <= np.floor(density * L):
-        #     history[i, 0] = 4
-        #     N_cars += 1
+        if N_cars <= np.floor(density * L):
+            history[i, 0] = 4
+            N_cars += 1
 
         for j in range(L):
             cell = history[i - 1, j]
@@ -34,7 +34,7 @@ def main(L, v_max, density, p, steps):
             new_speed = car_velocity
 
             # 1) Acceleration
-            if np.sum(history[i - 1, (new_x_position+1):(new_x_position+car_velocity+2)]) == 0:
+            if np.sum(history[i - 1, (new_x_position+1):(new_x_position+1+car_velocity+1)]) == 0:
                 new_speed = min(v_max, car_velocity + 1)
             else:
                 # find distance to next car
@@ -45,7 +45,7 @@ def main(L, v_max, density, p, steps):
 
             # 3) Randomization
             if np.random.random() <= p:
-                new_speed = max(0, car_velocity - 1)
+                new_speed = max(0, new_speed - 1)
 
 
             # 4) Each car is advanced
