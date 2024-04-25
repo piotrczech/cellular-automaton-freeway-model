@@ -7,8 +7,8 @@ def main():
         L = 50,
         v_max = 5,
         density = 0.1,
-        p = 0.6,
-        steps = 20
+        p = 0.3,
+        steps = 10
     )
 
     for line in road_history:

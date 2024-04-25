@@ -4,11 +4,10 @@ def simulate_with_history(L, v_max, density, p, steps):
     road = np.random.random(L) <= density
     road = road * np.ones(L)
 
-    while np.sum(road) <= np.floor(density * L):
+    # Cars should be exactly as density
+    while np.sum(road) != np.floor(density * L):
         road = np.random.random(L) <= density
         road = road * np.ones(L)
-
-    N_cars = np.sum(road)
 
     t_0 = L * 1
 
@@ -16,12 +15,6 @@ def simulate_with_history(L, v_max, density, p, steps):
     history[0] = road
 
     for i in range(1, steps + t_0):
-        # Generate new? - to powinno byc oparte na density
-        # albo jezdza w koło?
-        if N_cars <= np.floor(density * L):
-            history[i, 0] = 4
-            N_cars += 1
-
         for j in range(L):
             cell = history[i - 1, j]
 
@@ -49,10 +42,9 @@ def simulate_with_history(L, v_max, density, p, steps):
 
 
             # 4) Each car is advanced
-            # 4a) Car is outside of road
-            if (new_x_position >= L):
-                N_cars -= 1
-                continue
+            # 4a) Car is outside of road, but this is circle move
+            if (new_x_position > L - 1):
+                new_x_position = new_x_position - L
 
             # 4b) Car is advanced speed sites
             correct_cell_value = new_speed + 1 # + 1, becouse 0 is Null in simulation
