@@ -1,13 +1,20 @@
 import numpy as np
 
-def simulate_with_history(L, v_max, density, p, steps):
-    road = np.random.random(L) <= density
-    road = road * np.ones(L)
 
-    # Cars should be exactly as density
-    while np.sum(road) != np.floor(density * L):
-        road = np.random.random(L) <= density
-        road = road * np.ones(L)
+def generate_ones_array_with_expected_density(ones_density, size):
+    desired_array = np.zeros(size)
+    excepted_number_of_ones = int(np.floor(ones_density * size))
+
+    desired_ones_positions = np.random.randint(0, size, excepted_number_of_ones)
+
+    for position_to_place_one in desired_ones_positions:
+        desired_array[position_to_place_one] = 1
+
+    return desired_array
+
+
+def simulate_with_history(L, v_max, density, p, steps):
+    road = generate_ones_array_with_expected_density(ones_density=density, size=L)
 
     t_0 = L * 1
 
