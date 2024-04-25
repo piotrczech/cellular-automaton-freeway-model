@@ -13,6 +13,13 @@ def generate_ones_array_with_expected_density(ones_density, size):
     return desired_array
 
 
+def should_accelerate_car(previous_road_state, x_position, car_velocity):
+    first_cell_in_front_of = x_position + 1
+    last_cell_in_front_of = first_cell_in_front_of + car_velocity + 1
+
+    return np.sum(previous_road_state[first_cell_in_front_of:last_cell_in_front_of]) == 0
+
+
 def simulate_with_history(L, v_max, density, p, steps):
     road = generate_ones_array_with_expected_density(ones_density=density, size=L)
 
@@ -34,7 +41,11 @@ def simulate_with_history(L, v_max, density, p, steps):
             new_speed = car_velocity
 
             # 1) Acceleration
-            if np.sum(history[i - 1, (new_x_position+1):(new_x_position+1+car_velocity+1)]) == 0:
+            if should_accelerate_car(
+                previous_road_state=history[i - 1],
+                x_position=new_x_position,
+                car_velocity=car_velocity
+            ):
                 new_speed = min(v_max, car_velocity + 1)
             else:
                 # find distance to next car
