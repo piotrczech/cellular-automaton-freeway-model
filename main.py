@@ -6,8 +6,8 @@ def main():
     road_history = circle_freeway_model.simulate_with_history(
         L = 50,
         v_max = 5,
-        density = 0.1,
-        p = 0.3,
+        density = 0.3,
+        p = 0.5,
         steps = 10
     )
 

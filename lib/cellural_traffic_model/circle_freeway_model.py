@@ -5,7 +5,8 @@ def generate_ones_array_with_expected_density(ones_density, size):
     desired_array = np.zeros(size)
     excepted_number_of_ones = int(np.floor(ones_density * size))
 
-    desired_ones_positions = np.random.randint(0, size, excepted_number_of_ones)
+    rng = np.random.default_rng()
+    desired_ones_positions = rng.choice(a=size, size=excepted_number_of_ones, replace=False)
 
     for position_to_place_one in desired_ones_positions:
         desired_array[position_to_place_one] = 1
@@ -69,4 +70,5 @@ def simulate_with_history(L, v_max, density, p, steps):
             history[i, new_x_position] = correct_cell_value
 
     # Return collection of data after the first t_0 time steps
+    return history
     return history[t_0:]
