@@ -54,9 +54,9 @@ def simulate_with_history(L, v_max, density, p, steps):
                     if new_x_position+k < L and history[i - 1, new_x_position + k] == 0:
                         new_speed = max(0, new_speed - 1)
 
-            # 3) Randomization
+            # 3) Randomization if greater than zero
             if np.random.random() <= p:
-                new_speed = max(0, new_speed - 1)
+                new_speed = max(1, new_speed - 1)
 
 
             # 4) Each car is advanced
