@@ -1,5 +1,21 @@
 import numpy as np
 
+def get_distance_to_next_vehicle(x_pos, speed, road):
+    view_in_front_of_vehicle = road[(x_pos + 1) : (x_pos + speed + 3)] # 3 - is safe number that wystarcza to calcute distance. Higher distance is useless.
+
+    distance = 0
+
+    for vehicle_value in view_in_front_of_vehicle:
+        if vehicle_value != 0:
+            break
+
+        distance += 1
+
+    # If the world end with the distance:
+    if x_pos + distance + 1 >= len(road):
+        return 10
+
+    return distance
 
 def generate_ones_array_with_expected_density(ones_density, size):
     desired_array = np.zeros(size)
@@ -13,62 +29,60 @@ def generate_ones_array_with_expected_density(ones_density, size):
 
     return desired_array
 
-
-def should_accelerate_car(previous_road_state, x_position, car_velocity):
-    first_cell_in_front_of = x_position + 1
-    last_cell_in_front_of = first_cell_in_front_of + car_velocity + 1
-
-    return np.sum(previous_road_state[first_cell_in_front_of:last_cell_in_front_of]) == 0
-
-
 def simulate_with_history(L, v_max, density, p, steps):
     road = generate_ones_array_with_expected_density(ones_density=density, size=L)
 
     t_0 = L * 1
 
+    road = np.zeros(L)
+    road[8] = 5
+    road[25] = 6
+    road[32] = 6
+    road[40] = 6
+    road[49] = 1
+    road[50] = 1
+    road[52] = 2
+    road[60] = 5
+
     history = np.zeros((steps + t_0, L)).astype(int)
     history[0] = road
 
     for i in range(1, steps + t_0):
-        for j in range(L):
-            cell = history[i - 1, j]
+        road_last_stage = history[i - 1]
 
-            if cell == 0:
+        for vehicle_x in range(L):
+            vehicle_value = road_last_stage[vehicle_x]
+
+            if vehicle_value == 0:
                 continue
 
-            car_velocity = cell - 1 # becouse 0 is treated as Null
-            new_x_position = j + car_velocity
+            vehicle_velocity = vehicle_value - 1 # becouse 0 is treated as Null
 
-            new_speed = car_velocity
-
-            # 1) Acceleration
-            if should_accelerate_car(
-                previous_road_state=history[i - 1],
-                x_position=new_x_position,
-                car_velocity=car_velocity
+            # 1. Accelerate
+            distance_to_next_vehicle = get_distance_to_next_vehicle(vehicle_x, vehicle_velocity, road_last_stage)
+            if (
+                distance_to_next_vehicle > vehicle_velocity + 1
+                and vehicle_velocity < v_max
             ):
-                new_speed = min(v_max, car_velocity + 1)
-            else:
-                # find distance to next car
-                new_speed = car_velocity
-                for k in range(1, car_velocity + 1):
-                    if new_x_position+k < L and history[i - 1, new_x_position + k] == 0:
-                        new_speed = max(0, new_speed - 1)
+                vehicle_velocity += 1
+
+            # 2. Slow down
+            distance_to_next_vehicle = get_distance_to_next_vehicle(vehicle_x, vehicle_velocity, road_last_stage)
+            if (distance_to_next_vehicle <= vehicle_velocity):
+                vehicle_velocity = distance_to_next_vehicle
 
             # 3) Randomization if greater than zero
             if np.random.random() <= p:
-                new_speed = max(0, new_speed - 1)
+                vehicle_velocity -= 1
 
+            vehicle_velocity = max(0, vehicle_velocity)
 
-            # 4) Each car is advanced
-            # 4a) Car is outside of road, but this is circle move
-            if (new_x_position > L - 1):
-                new_x_position = new_x_position - L
+            vehicle_new_x = (vehicle_x + vehicle_velocity) % L
+            vehicle_new_value = vehicle_velocity + 1
 
-            # 4b) Car is advanced speed sites
-            correct_cell_value = new_speed + 1 # + 1, becouse 0 is Null in simulation
-            history[i, new_x_position] = correct_cell_value
+            # ?? - w połowie jeszcze rozumiem czemu tak działa
+            history[i - 1, vehicle_x] = vehicle_new_value
+            history[i, vehicle_new_x] = vehicle_new_value
 
     # Return collection of data after the first t_0 time steps
-    return history
     return history[t_0:]

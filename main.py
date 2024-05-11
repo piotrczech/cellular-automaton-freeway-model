@@ -1,14 +1,14 @@
-#!/usr/bin/env python3.11
+#!/usr/bin/env python3
 
 from lib.cellural_traffic_model import circle_freeway_model
 
 def main():
     road_history = circle_freeway_model.simulate_with_history(
-        L = 50,
+        L = 70,
         v_max = 5,
         density = 0.3,
-        p = 0.5,
-        steps = 10
+        p = 0.4,
+        steps = 40
     )
 
     for line in road_history:
