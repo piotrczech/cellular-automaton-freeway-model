@@ -34,16 +34,6 @@ def simulate_with_history(L, v_max, density, p, steps):
 
     t_0 = L * 1
 
-    road = np.zeros(L)
-    road[8] = 5
-    road[25] = 6
-    road[32] = 6
-    road[40] = 6
-    road[49] = 1
-    road[50] = 1
-    road[52] = 2
-    road[60] = 5
-
     history = np.zeros((steps + t_0, L)).astype(int)
     history[0] = road
 
