@@ -29,25 +29,26 @@ def simulate_with_history(L: int, v_max: int, density: float, p: float, steps: i
         Parameters
         ----------
         L : int
-            Size of the road (count of array L sites)
+            Size of the road (number of cells).
         v_max : int
             Maximum speed for vehicle
         density : float, 0<=density<=1
-            Density of vehicles in road
-        p : float, 0<=density<=1 
-            Probability p, the velocity of each hivle is decreased by one
+            Density of vehicles in road, ranging from 0 to 1.
+        p : float, 0<=density<=1
+            Probability p, the velocity of each hivle is decreased by one, ranging from 0 to 1.
         steps : int
-            Number of steps to calculate (monte carlo method)
+            Number of simulation steps to perform.
 
         Returns
         -------
-        history: two-dimensional array
-            monte carlo simulation history that contains velocity information
-            (each site is increased by one, becouse 0 is null - empty cell)
+        np.ndarray
+            A two-dimensional array representing the simulation history, where each row corresponds 
+            to a time step and each column corresponds to a cell on the road. The values represent 
+            the velocities of vehicles at each cell and time step.
     """
     road = generate_ones_array_with_expected_density(ones_density=density, size=L)
 
-    t_0 = L
+    t_0 = L * 1
 
     history = np.zeros((steps + t_0, L)).astype(int)
     history[0] = road
@@ -61,7 +62,7 @@ def simulate_with_history(L: int, v_max: int, density: float, p: float, steps: i
             if vehicle_value == 0:
                 continue
 
-            vehicle_velocity = vehicle_value - 1 # becouse 0 is treated as Null
+            vehicle_velocity = vehicle_value - 1 # because 0 is treated as Null
 
             # 1. Accelerate
             vehicle_velocity = algorithm.accelerate_if_possible(vehicle_x, vehicle_velocity, road_last_stage, v_max)

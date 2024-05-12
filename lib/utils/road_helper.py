@@ -1,7 +1,26 @@
 def get_distance_to_next_vehicle(x_pos: int, speed: int, road):
     """
-    With provided road stat it calculate "almost" real distance.
-    (!!) If the distance is greater than x_pos+speed+3 algorithm stop working
+    Calculates the distance to the next vehicle on the road.
+
+    This function calculates the distance from the given position (`x_pos`) to the next 
+    vehicle on the road, taking into account the vehicle's speed. It iterates over the 
+    elements of the road array starting from the position ahead of the vehicle (`x_pos + 1`) 
+    up to `x_pos + speed + 2` to determine the distance. If the distance is greater than 
+    `x_pos + speed + 3`, the calculation stops, as it is considered unnecessary.
+
+    Parameters
+    ----------
+    x_pos : int
+        The x-coordinate of the vehicle on the road.
+    speed : int
+        The current velocity of the vehicle.
+    road : np.ndarray
+        The state of the road.
+
+    Returns
+    -------
+    int
+        The distance to the next vehicle on the road.
     """
     x_pos_start = x_pos + 1
     x_pos_end = x_pos_start + speed + 2 # +2 - is safe number that wystarcza to calcute distance. Higher distance is useless.
