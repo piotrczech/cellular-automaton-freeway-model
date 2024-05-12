@@ -3,7 +3,7 @@ import argparse, sys
 
 from lib.cellural_traffic_model import circle_freeway_model
 from lib.utils.display.core import DisplaySimulationContext
-from lib.utils.display.strategies import ConsoleDisplayStrategy, ScatterPlotDisplayStrategy
+from lib.utils.display.strategies import ConsoleDisplayStrategy, ScatterPlotDisplayStrategy, LinePlotDisplayStrategy
 
 def define_parser():
     """
@@ -47,6 +47,11 @@ def define_parser():
         default=50, type=int,
         help='Number of simulation steps (default: 50)'
     )
+    parser.add_argument(
+        '-m', '--display-mode',
+        default='console', choices=['console', 'scatter', 'line'],
+        help='Display mode for simulation data (default: console)'
+    )
 
     return parser
 
@@ -66,6 +71,11 @@ def main():
     )
 
     display_context = DisplaySimulationContext(ConsoleDisplayStrategy) 
+    if args.display_mode == 'scatter':
+        display_context = DisplaySimulationContext(ScatterPlotDisplayStrategy)
+    elif args.display_mode == 'line':
+        display_context = DisplaySimulationContext(LinePlotDisplayStrategy)
+    
     display_context.display(road_history)
 
 if __name__ == "__main__":
