@@ -3,10 +3,51 @@ import numpy as np
 from lib.utils.generate_array_helper import generate_ones_array_with_expected_density
 from lib.cellural_traffic_model import algorithm
 
-def simulate_with_history(L, v_max, density, p, steps):
+def simulate_with_history(L: int, v_max: int, density: float, p: float, steps: int):
+    """
+        The model.
+        -------
+
+        (Based on article) Our computational model is defined on two-dimensional array
+        of ("i" + "L" * 2) steps that each of them consist "L" sites array.
+
+        Each site may either be occupied by one vehicle, or it may be empty.
+
+        Each vehicle has an integer velocity with values between zero and v_max,
+        but (!!) they are stored with additional + 1 value - and 0 is treated as empty site - no vehicle.
+
+        One update of the system consists of the following four consecutive steps,
+        which are performed in parallel for all vehicles:
+        1. Accelerate
+        2. Slowing down (due to other cars)
+        3. Randomization
+        4. Car motion
+        
+        Read more in article "A cellular automation model for freeway traffic"
+        by Kai Nagel and Michael Schreckenberg
+
+        Parameters
+        ----------
+        L : int
+            Size of the road (count of array L sites)
+        v_max : int
+            Maximum speed for vehicle
+        density : float, 0<=density<=1
+            Density of vehicles in road
+        p : float, 0<=density<=1 
+            Probability p, the velocity of each hivle is decreased by one
+        steps : int
+            Number of steps to calculate (monte carlo method)
+
+        Returns
+        -------
+        history: two-dimensional array
+            monte carlo simulation history that contains velocity information
+            (each site is increased by one, becouse 0 is null - empty cell)
+    """
     road = generate_ones_array_with_expected_density(ones_density=density, size=L)
 
-    t_0 = L * 1
+    t_0 = L
 
     history = np.zeros((steps + t_0, L)).astype(int)
     history[0] = road
