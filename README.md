@@ -86,5 +86,5 @@ pip install pytest
 Once pytest is installed, you can run the tests by navigating to the project directory and executing:
 
 ```bash
-pytest .
+pytest --verbosity=1 .
 ```
