@@ -21,7 +21,7 @@ def accelerate_if_possible(vehicle_x: int, vehicle_velocity: int, road_last_stag
     return vehicle_velocity
 
 
-def slow_down_if_needed(vehicle_x, vehicle_velocity, road_last_stage):
+def slow_down_if_needed(vehicle_x: int, vehicle_velocity: int, road_last_stage):
     """
     Slowing down.
     -------
@@ -37,7 +37,7 @@ def slow_down_if_needed(vehicle_x, vehicle_velocity, road_last_stage):
     return vehicle_velocity
 
 
-def slow_down_with_random(vehicle_velocity, p):
+def slow_down_with_random(vehicle_velocity: int, p: float):
     """
     Randomization.
     -------
@@ -50,7 +50,7 @@ def slow_down_with_random(vehicle_velocity, p):
     return vehicle_velocity
 
 
-def register_motion(history, history_current_step, road_size, vehicle_x, vehicle_velocity):
+def register_motion(history, history_current_step: int, road_size: int, vehicle_x: int, vehicle_velocity: int):
     """
     Car motion.
     -------
