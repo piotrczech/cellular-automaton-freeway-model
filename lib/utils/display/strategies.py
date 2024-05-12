@@ -1,20 +1,6 @@
-from abc import ABC, abstractmethod
 import matplotlib.pyplot as plt
 
-class DisplayStrategy(ABC):
-    """
-    The Strategy interface defines a method for displaying simulation data.
-
-    The DisplaySimulationContext uses this interface to call the display method
-    """
-
-    @abstractmethod
-    def display(self, road_history):
-        """
-        Display method to be implemented by concrete strategies.
-        """
-        pass
-
+from lib.utils.display.core import DisplayStrategy
 
 class ConsoleDisplayStrategy(DisplayStrategy):
     """

@@ -1,4 +1,19 @@
-from lib.utils.display.strategies import DisplayStrategy
+from abc import ABC, abstractmethod
+
+class DisplayStrategy(ABC):
+    """
+    The Strategy interface defines a method for displaying simulation data.
+
+    The DisplaySimulationContext uses this interface to call the display method
+    """
+
+    @abstractmethod
+    def display(self, road_history):
+        """
+        Display method to be implemented by concrete strategies.
+        """
+        pass
+
 
 class DisplaySimulationContext:
     """
@@ -45,8 +60,8 @@ class DisplaySimulationContext:
 
         """
 
-        if not isinstance(display_strategy, object):
-            raise TypeError("display_strategy must be an object.")
+        if not (hasattr(display_strategy, 'display') and callable(getattr(display_strategy, 'display'))):
+            raise TypeError("display_strategy must be an object with display method.")
 
         self.display_strategy = display_strategy
 
