@@ -12,3 +12,16 @@ class ConsoleDisplayStrategy:
         for line in road_history:
             line_as_strings = [str(x - 1) if x != 0 else "." for x in line]
             print(" ".join(line_as_strings))  # Połączenie łańcuchów spacją i wydrukowanie
+        
+class PlotDisplayStrategy:
+    """
+    The Strategy interface that present output as matplotlib plot
+
+    The DisplaySimulationContext uses this interface to call the display method
+    """
+    def display(road_history):
+        """
+        Display monte carlo simulation data as aerial plot
+        """
+
+        pass
