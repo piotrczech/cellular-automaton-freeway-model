@@ -25,7 +25,7 @@ def accelerate_if_possible(vehicle_x: int, vehicle_velocity: int, road_last_stag
     int
         The new velocity of the vehicle after acceleration.
     """
-    distance_to_next_vehicle = get_distance_to_next_vehicle(vehicle_x, vehicle_velocity, road_last_stage)
+    distance_to_next_vehicle = get_distance_to_next_vehicle(vehicle_x, road_last_stage)
 
     if (
         distance_to_next_vehicle > vehicle_velocity + 1
@@ -57,10 +57,10 @@ def slow_down_if_needed(vehicle_x: int, vehicle_velocity: int, road_last_stage):
     int
         The new velocity of the vehicle after deceleration.
     """
-    distance_to_next_vehicle = get_distance_to_next_vehicle(vehicle_x, vehicle_velocity, road_last_stage)
+    distance_to_next_vehicle = get_distance_to_next_vehicle(vehicle_x, road_last_stage)
 
     if (distance_to_next_vehicle <= vehicle_velocity):
-        return distance_to_next_vehicle
+        return distance_to_next_vehicle - 1
     
     return vehicle_velocity
 

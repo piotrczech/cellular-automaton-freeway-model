@@ -74,3 +74,17 @@ python main.py --display-mode scatter --sites 350 --steps 600 --v_max 15 --proba
 ###### Note
 
 At the moment, the scatter implementation performs significantly better than the line plot, so we recommend using it.
+
+## Testing
+
+Unit tests can be conducted using pytest. To run the tests, make sure you have pytest installed in your environment. You can install it using pip:
+
+```bash
+pip install pytest
+```
+
+Once pytest is installed, you can run the tests by navigating to the project directory and executing:
+
+```bash
+pytest .
+```
