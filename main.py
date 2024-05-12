@@ -2,6 +2,8 @@
 import argparse, sys
 
 from lib.cellural_traffic_model import circle_freeway_model
+from lib.utils.display.core import DisplaySimulationContext
+from lib.utils.display.strategies import ConsoleDisplayStrategy 
 
 def define_parser():
     parser = argparse.ArgumentParser(
@@ -32,9 +34,8 @@ def main():
         steps = args.steps
     )
 
-    for line in road_history:
-        line_as_strings = [str(x - 1) if x != 0 else "." for x in line]
-        print(" ".join(line_as_strings))  # Połączenie łańcuchów spacją i wydrukowanie
+    display_context = DisplaySimulationContext(ConsoleDisplayStrategy) 
+    display_context.display(road_history)
 
 if __name__ == "__main__":
     main()
